@@ -1,26 +1,39 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import Hero from './components/Hero'
+import About from './components/About'
+import Skills from './components/Skills'
+import VisionContact from './components/VisionContact'
+import { ArrowUp } from 'lucide-react'
+
+function BackToTop() {
+  const [show, setShow] = useState(false)
+  useEffect(() => {
+    const onScroll = () => setShow(window.scrollY > 400)
+    window.addEventListener('scroll', onScroll)
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
+  return (
+    <button
+      aria-label="Back to top"
+      onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+      className={`fixed bottom-6 right-6 z-50 inline-flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur transition hover:bg-white/20 ${show ? 'opacity-100' : 'pointer-events-none opacity-0'}`}
+    >
+      <ArrowUp className="h-5 w-5" />
+    </button>
+  )
+}
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-50 flex items-center justify-center">
-      <div className="bg-white p-8 rounded-lg shadow-lg">
-        <h1 className="text-3xl font-bold text-gray-800 mb-4">
-          Vibe Coding Platform
-        </h1>
-        <p className="text-gray-600 mb-6">
-          Your AI-powered development environment
-        </p>
-        <div className="text-center">
-          <button
-            onClick={() => setCount(count + 1)}
-            className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded"
-          >
-            Count is {count}
-          </button>
-        </div>
-      </div>
+    <div className="min-h-screen scroll-smooth bg-slate-950 text-slate-100 antialiased">
+      <Hero />
+      <About />
+      <Skills />
+      <VisionContact />
+      <footer className="border-t border-white/10 bg-slate-950 py-10 text-center text-sm text-slate-400">
+        © {new Date().getFullYear()} Shravan Kumar. Crafted with curiosity.
+      </footer>
+      <BackToTop />
     </div>
   )
 }
