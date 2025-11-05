@@ -1,49 +1,7 @@
-import { useEffect, useMemo, useState } from 'react'
 import { motion } from 'framer-motion'
 import Spline from '@splinetool/react-spline'
 
-const typingPhrases = [
-  'Student',
-  'AI Builder',
-  'Future Innovator',
-]
-
-function useTypingText(phrases, speed = 90, pause = 1200) {
-  const items = useMemo(() => phrases, [phrases])
-  const [index, setIndex] = useState(0)
-  const [text, setText] = useState('')
-  const [deleting, setDeleting] = useState(false)
-
-  useEffect(() => {
-    const current = items[index % items.length]
-    const step = () => {
-      if (!deleting) {
-        setText(current.slice(0, text.length + 1))
-        if (text.length + 1 === current.length) {
-          setDeleting(true)
-          return setTimeout(step, pause)
-        }
-      } else {
-        setText(current.slice(0, Math.max(0, text.length - 1)))
-        if (text.length === 0) {
-          setDeleting(false)
-          setIndex((i) => (i + 1) % items.length)
-        }
-      }
-      const nextDelay = deleting ? speed * 0.6 : speed
-      timer = setTimeout(step, nextDelay)
-    }
-
-    let timer = setTimeout(step, speed)
-    return () => clearTimeout(timer)
-  }, [deleting, index, items, pause, speed, text.length])
-
-  return text
-}
-
 export default function Hero() {
-  const typed = useTypingText(typingPhrases)
-
   return (
     <section id="home" className="relative min-h-[90vh] w-full overflow-hidden bg-slate-950 text-slate-100">
       {/* Background Spline scene */}
@@ -62,29 +20,20 @@ export default function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="space-y-5"
+          className="space-y-6"
         >
-          <span className="inline-flex items-center rounded-full bg-white/5 px-4 py-1 text-sm text-cyan-300 ring-1 ring-white/10 backdrop-blur">
+          {/* Bigger, bolder intro */}
+          <h1 className="bg-gradient-to-r from-white via-cyan-200 to-blue-300 bg-clip-text text-5xl font-semibold tracking-tight text-transparent drop-shadow sm:text-7xl">
             Hi, I’m Shravan 👋
-          </span>
-
-          <h1 className="text-4xl font-semibold tracking-tight sm:text-6xl">
-            Building the future with curiosity and code
           </h1>
 
+          {/* Static subheading */}
+          <p className="text-lg text-cyan-300 sm:text-xl">Student • AI Builder • Future Innovator</p>
+
+          {/* Bio */}
           <p className="mx-auto max-w-2xl text-base leading-relaxed text-slate-300 sm:text-lg">
             I’m a motivated student from India, exploring AI, automation, and entrepreneurship while preparing for JEE Advanced. I love crafting systems, learning fast, and turning ideas into real, useful products.
           </p>
-
-          <div className="mx-auto flex max-w-md flex-col items-center gap-3">
-            <div className="text-cyan-300">
-              <span className="font-medium">Student • AI Builder • Future Innovator</span>
-            </div>
-            <div className="text-sm text-slate-400">
-              <span className="text-slate-200">{typed}</span>
-              <span className="animate-pulse">|</span>
-            </div>
-          </div>
         </motion.div>
 
         {/* Quote / mantra */}
